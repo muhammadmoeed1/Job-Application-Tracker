@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerPulse | Job Application Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>CareerPulse</span>
+        </div>
+        
+        <a href="#" class="nav-link nav-item active" data-page="dashboard">
+            <i class="fas fa-chart-line"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-link nav-item" data-page="add-job">
+            <i class="fas fa-plus-circle"></i>
+            <span>Add Application</span>
+        </a>
+        <a href="#" class="nav-link nav-item" data-page="analytics">
+            <i class="fas fa-chart-pie"></i>
+            <span>Analytics</span>
+        </a>
+        <a href="#" class="nav-link nav-item" data-page="resources">
+            <i class="fas fa-book"></i>
+            <span>Resources</span>
+        </a>
+        <a href="#" class="nav-link nav-item" data-page="settings">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </a>
+
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Dark Mode</span>
+        </button>
+    </aside>
+
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <section id="dashboard" class="page active">
+            <div class="dashboard-header">
+                <h1 class="page-title">Job Application Dashboard</h1>
+                <button class="btn btn-primary" id="addNewJob">
+                    <i class="fas fa-plus"></i>
+                    Add New Application
+                </button>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card applied">
+                    <i class="fas fa-paper-plane"></i>
+                    <h3 id="applied-count">0</h3>
+                    <p>Applications Sent</p>
+                </div>
+                <div class="stat-card pending">
+                    <i class="fas fa-clock"></i>
+                    <h3 id="pending-count">0</h3>
+                    <p>Pending</p>
+                </div>
+                <div class="stat-card interviewing">
+                    <i class="fas fa-comments"></i>
+                    <h3 id="interviewing-count">0</h3>
+                    <p>Interview Scheduled</p>
+                </div>
+                <div class="stat-card offer">
+                    <i class="fas fa-handshake"></i>
+                    <h3 id="offer-count">0</h3>
+                    <p>Offer Received</p>
+                </div>
+                <div class="stat-card rejected">
+                    <i class="fas fa-times-circle"></i>
+                    <h3 id="rejected-count">0</h3>
+                    <p>Rejected</p>
+                </div>
+                <div class="stat-card hired">
+                    <i class="fas fa-trophy"></i>
+                    <h3 id="hired-count">0</h3>
+                    <p>Hired</p>
+                </div>
+            </div>
+
+            <h2 class="mb-20">Recent Applications</h2>
+            <div class="applications-list" id="applicationsList">
+                <!-- Application cards will be generated here -->
+            </div>
+        </section>
+
+        <!-- Add Job Page -->
+        <section id="add-job" class="page">
+            <div class="form-container">
+                <h2 class="form-title">
+                    <i class="fas fa-plus-circle"></i>
+                    Add New Job Application
+                </h2>
+                <form id="jobForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="companyName">
+                                <i class="fas fa-building"></i>
+                                Company Name
+                            </label>
+                            <input type="text" id="companyName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jobTitle">
+                                <i class="fas fa-briefcase"></i>
+                                Job Title
+                            </label>
+                            <input type="text" id="jobTitle" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">
+                                <i class="fas fa-tag"></i>
+                                Status
+                            </label>
+                            <select id="status" class="form-control" required>
+                                <option value="Pending">Pending</option>
+                                <option value="Interview Scheduled">Interview Scheduled</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Offer Received">Offer Received</option>
+                                <option value="Hired">Hired</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="appliedDate">
+                                <i class="fas fa-calendar"></i>
+                                Applied Date
+                            </label>
+                            <input type="date" id="appliedDate" class="form-control" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="notes">
+                                <i class="fas fa-sticky-note"></i>
+                                Notes
+                            </label>
+                            <textarea id="notes" class="form-control" placeholder="Add any relevant details about this application..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelAdd">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Analytics Page -->
+        <section id="analytics" class="page">
+            <div class="dashboard-header">
+                <h1 class="page-title">Application Analytics</h1>
+            </div>
+            
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3 class="chart-title">
+                        <i class="fas fa-chart-line"></i>
+                        Applications by Month
+                    </h3>
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Applications by Status
+                    </h3>
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Page -->
+        <section id="resources" class="page">
+            <div class="dashboard-header">
+                <h1 class="page-title">Job Search Resources</h1>
+            </div>
+            
+            <h2 class="mb-20">Pakistan Resources</h2>
+            <div class="resources-grid" id="pakistan-resources">
+                <!-- Pakistan resources will be generated here -->
+            </div>
+            
+            <h2 class="mb-20">International Resources</h2>
+            <div class="resources-grid" id="international-resources">
+                <!-- International resources will be generated here -->
+            </div>
+        </section>
+
+        <!-- Settings Page -->
+        <section id="settings" class="page">
+            <div class="dashboard-header">
+                <h1 class="page-title">Settings</h1>
+            </div>
+            
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <div class="settings-section">
+                        <h3>Profile</h3>
+                        <div class="avatar-upload">
+                            <div class="avatar" id="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary" id="uploadAvatar">
+                                    <i class="fas fa-upload"></i>
+                                    Upload Avatar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="userName">
+                                <i class="fas fa-user"></i>
+                                Full Name
+                            </label>
+                            <input type="text" id="userName" class="form-control" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="userEmail">
+                                <i class="fas fa-envelope"></i>
+                                Email Address
+                            </label>
+                            <input type="email" id="userEmail" class="form-control" placeholder="Enter your email">
+                        </div>
+                        <button class="btn btn-primary" id="saveProfile">
+                            <i class="fas fa-save"></i>
+                            Save Profile
+                        </button>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Data Management</h3>
+                        <p class="resource-description">Export your application data as a JSON file or import data from a previous export.</p>
+                        <div class="import-export">
+                            <button class="btn btn-secondary" id="exportData">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                            <button class="btn btn-secondary" id="importData">
+                                <i class="fas fa-upload"></i>
+                                Import Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <div class="settings-section">
+                        <h3>Notifications</h3>
+                        <div class="toggle-group">
+                            <span class="toggle-label">Email Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="emailNotifications">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-group">
+                            <span class="toggle-label">In-App Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="appNotifications">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-group">
+                            <span class="toggle-label">Status Change Alerts</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="statusNotifications">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Theme</h3>
+                        <p class="resource-description">Choose how CareerPulse looks.</p>
+                        <div class="theme-options">
+                            <div class="theme-option" data-theme="light">
+                                <div class="theme-preview theme-light"></div>
+                                <span>Light</span>
+                            </div>
+                            <div class="theme-option" data-theme="dark">
+                                <div class="theme-preview theme-dark"></div>
+                                <span>Dark</span>
+                            </div>
+                            <div class="theme-option" data-theme="system">
+                                <div class="theme-preview theme-system"></div>
+                                <span>System</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Job Details Page -->
+        <section id="details" class="page">
+            <div class="job-details-header">
+                <h1 class="page-title">Job Application Details</h1>
+                <div>
+                    <button class="btn btn-primary" id="editJob">
+                        <i class="fas fa-edit"></i>
+                        Edit
+                    </button>
+                    <button class="btn btn-danger" id="deleteJob">
+                        <i class="fas fa-trash"></i>
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-section">
+                    <h3>
+                        <i class="fas fa-building"></i>
+                        Company Information
+                    </h3>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-signature"></i>
+                            Company Name:
+                        </div>
+                        <div class="detail-value" id="detail-company"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-briefcase"></i>
+                            Job Title:
+                        </div>
+                        <div class="detail-value" id="detail-title"></div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>
+                        <i class="fas fa-tag"></i>
+                        Application Status
+                    </h3>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-status"></i>
+                            Status:
+                        </div>
+                        <div class="detail-value">
+                            <span class="application-status" id="detail-status"></span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar"></i>
+                            Applied Date:
+                        </div>
+                        <div class="detail-value" id="detail-date"></div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>
+                        <i class="fas fa-sticky-note"></i>
+                        Notes
+                    </h3>
+                    <div class="detail-item">
+                        <div class="detail-value" id="detail-notes"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-secondary" id="backToDashboard">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
